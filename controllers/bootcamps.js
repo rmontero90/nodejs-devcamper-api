@@ -41,10 +41,37 @@ exports.getBootcamps = async (req, res, next) => {
     } else {
         query = query.sort('-createdAt');
     }
-    
+
+    //pagination
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 100;
+    const skip = (page - 1) * limit;
+    const endIndex = page * limit;
+    const startIndex = skip;
+    const total = await Bootcamp.countDocuments();
+
+    const pagination = {};
+
+    if (endIndex < total) {
+        //there is a next page
+        pagination.next = {
+            page: page + 1,
+            limit
+        }
+    }
+
+    if (startIndex > 0) {
+        pagination.prev = {
+            page: page - 1,
+            limit
+        }
+    }
+
+    query = query.skip(skip).limit(limit);
+
     //Executing query
     const bootcamps = await query;
-    res.status(200).json({success: true, count: bootcamps.length, data: bootcamps});
+    res.status(200).json({success: true, count: bootcamps.length, pagination, data: bootcamps});
 }
 // @desc    Get single bootcamp
 // @route   GET /api/v1/bootcamps/:id
