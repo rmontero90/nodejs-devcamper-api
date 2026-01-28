@@ -10,11 +10,28 @@ exports.getCourses = async (req, res, next) => {
 
     if (req.params.bootcampId) {
         query = Course.find({ bootcamp: req.params.bootcampId });
-    } else {
+    } else if (req.query.select && req.query.select.includes('bootcamp')) {
         query = Course.find().populate({
             path: 'bootcamp',
             select: 'name description'
         });
+    }
+    else { 
+        query = Course.find();
+    }   
+
+        //Select Fields
+    if (req.query.select) {
+        const fields = req.query.select.split(',').join(' ');
+        query = query.select(fields);
+    }
+
+       // Sorting
+    if (req.query.sort) {
+        const sortBy = req.query.sort.split(',').join(' ');
+        query = query.sort(sortBy);
+    } else {
+        query = query.sort('-createdAt');
     }
 
     const courses = await query;
