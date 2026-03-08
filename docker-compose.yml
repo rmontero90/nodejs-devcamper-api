@@ -1,0 +1,12 @@
+services:
+  mongo:
+    image: mongo:latest
+    restart: unless-stopped
+    env_file:
+      - config/config.env
+    volumes:
+      - ./mongo-data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - "27017:27017"
+
