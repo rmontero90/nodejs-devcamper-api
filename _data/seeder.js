@@ -17,7 +17,7 @@ const bootcamps = JSON.parse(
   fs.readFileSync(`${__dirname}/samples/bootcamps.json`, 'utf-8')
 );
 // const courses = JSON.parse(
-//   fs.readFileSync(`${__dirname}/courses.json`, 'utf-8')
+//   fs.readFileSync(`${__dirname}/samples/courses.json`, 'utf-8')
 // );
 
 // Import into DB
