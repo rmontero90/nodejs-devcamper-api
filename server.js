@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
+const cookieParser = require('cookie-parser');
 
 //Route files
 const bootcamps = require('./routes/bootcamps');
@@ -26,6 +27,7 @@ const app = express();
 
 //Body parser
 app.use(express.json());
+app.use(cookieParser());
 app.set('query parser', 'extended'); // to support nested query objects
 
 // const logger = (req, res, next) => {
