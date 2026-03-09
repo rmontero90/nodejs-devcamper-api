@@ -64,3 +64,12 @@ const sendTokenResponse = (user, statusCode, res) => {
         options.secure = true;
     }
 }
+
+// Get user from the token and add id to req object
+exports.getMe = async (req, res, next) => {
+    const user = await User.findById(req.user.id);
+    res.status(200).json({
+        success: true,
+        data: user
+    });
+}
