@@ -5,15 +5,17 @@ const {
     addCourse
 } = require('../controllers/courses');
 
+const { protect } = require('../middleware/auth')
+
 const router = express.Router({ mergeParams: true });
 
 router
     .route('/')
-    .get(getCourses)
-    .post(addCourse);
+    .get(protect, getCourses)
+    .post(protect, addCourse);
 
 router
     .route('/:id')
-    .get(getCourse)
+    .get(protect, getCourse)
 
 module.exports = router;
